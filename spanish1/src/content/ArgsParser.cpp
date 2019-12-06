@@ -97,27 +97,7 @@ void ArgsParser::ExtractFlags(const std::string &args )
 	output.insert(output.begin(),"DummyApp");
 	ExtractFlags(output);
 }
-/*
-void ArgsParser::ExtractFlags(int argc,const char *argv[] )
-{
-	for(int i=0;i<argc;++i){
-		string arg(argv[i]);
-		if( argv[i][0]== '-'){
-			if(arg.length()>2){
-				for(size_t ch=1;ch<arg.length();++ch){
-					flags_.insert(arg[ch]);
-				}
-			}
-			else if(arg.length()>1){
-				flags_.insert(arg[1]);
-			}
-		}
-		else {
-			inputs_.push_back(arg);
-		}
-	}
-}
-*/
+
 void ArgsParser::ExtractFlags(const std::vector<std::string> &args )
 {
 	for(unsigned i=0;i<args.size();++i){
