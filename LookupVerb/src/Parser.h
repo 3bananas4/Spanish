@@ -14,6 +14,9 @@
 #include <cctype>
 #include <locale>
 
+/*
+    I thought I'd created another parser.
+*/
 class Parser {
 
 	// trim from start (in place)
