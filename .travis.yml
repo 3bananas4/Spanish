@@ -1,9 +1,8 @@
 language: cpp
 dist: bionic
-compiler:
-- gcc
-os:
-- linux
-branches:
-  only:
-- master
+compiler: gcc
+os: linux
+
+script: 
+- g++ -o spanish1 ./src/content/ArgsParser.cpp 
+./src/content/Component.cpp ./src/content/Content.cpp ./src/content/FileReader.cpp ./src/content/Parser.cpp ./src/content/Rule.cpp ./src/content/Selector.cpp ./src/content/VerbBase.cpp ./src/content/Word.cpp ./src/main/spanish1.cpp 
