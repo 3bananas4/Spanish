@@ -1,0 +1,9 @@
+language: cpp
+dist: bionic
+compiler:
+- gcc
+os:
+- linux
+branches:
+  only:
+- master
