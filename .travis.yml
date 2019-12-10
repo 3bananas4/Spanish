@@ -4,4 +4,5 @@ compiler: gcc
 os: linux
 
 script: 
-- g++ -o spanish1 ./src/content/ArgsParser.cpp ./src/content/Component.cpp ./src/content/Content.cpp ./src/content/FileReader.cpp ./src/content/Parser.cpp ./src/content/Rule.cpp ./src/content/Selector.cpp ./src/content/VerbBase.cpp ./src/content/Word.cpp ./src/main/spanish1.cpp 
+- g++ -o spanish1 ./spanish1/src/content/ArgsParser.cpp ./spanish1/src/content/Component.cpp ./spanish1/src/content/Content.cpp ./spanish1/src/content/FileReader.cpp ./spanish1/src/content/Parser.cpp ./spanish1/src/content/Rule.cpp ./spanish1/src/content/Selector.cpp ./spanish1/src/content/VerbBase.cpp ./spanish1/src/content/Word.cpp ./spanish1/src/main/spanish1.cpp
+- g++  -o LookupVerb  ./LookupVerb/src/FileReader.cpp ./LookupVerb/src/InfContent.cpp ./LookupVerb/src/LookupVerb.cpp ./LookupVerb/src/Parser.cpp
