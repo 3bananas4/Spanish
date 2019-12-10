@@ -4,7 +4,17 @@ compiler: gcc
 os: linux
 
 script: 
-- g++ -o conjugator ./spanish1/src/content/ArgsParser.cpp ./spanish1/src/content/Component.cpp ./spanish1/src/content/Content.cpp ./spanish1/src/content/FileReader.cpp ./spanish1/src/content/Parser.cpp ./spanish1/src/content/Rule.cpp ./spanish1/src/content/Selector.cpp ./spanish1/src/content/VerbBase.cpp ./spanish1/src/content/Word.cpp ./spanish1/src/main/spanish1.cpp
+- g++ -c -o argsParser ./spanish1/src/content/ArgsParser.cpp
+- g++ -c -o Component ./spanish1/src/content/Component.cpp
+- g++ -c -o Content ./spanish1/src/content/Content.cpp
+- g++ -c -o FileReader ./spanish1/src/content/FileReader.cpp
+- g++ -c -o Parser ./spanish1/src/content/Parser.cpp
+- g++ -c -o Rule ./spanish1/src/content/Rule.cpp
+- g++ -c -o Selector ./spanish1/src/content/Selector.cpp
+- g++ -c -o VerbBase ./spanish1/src/content/VerbBase.cpp
+- g++ -c -o Word ./spanish1/src/content/Word.cpp
+- g++ -c -o spanish1 ./spanish1/src/main/spanish1.cpp
+- g++ -o conjugator argsParser.o Component.o Content.o FileReader.o Parser.o Rule.o Selector.o VerbBase.o Word.o spanish1.o -lm
 - g++  -o lookup ./LookupVerb/src/FileReader.cpp ./LookupVerb/src/InfContent.cpp ./LookupVerb/src/LookupVerb.cpp ./LookupVerb/src/Parser.cpp
 - ls -lah
 #- g++  -o unittest ./TestSuite/src/main.cpp
