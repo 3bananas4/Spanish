@@ -2,22 +2,14 @@ language: cpp
 dist: bionic
 compiler: gcc
 os: linux
-
+notifications:
+  email:
+    - jrhewitt68@gmail.com
 script:
 - mkdir build
-- g++ -c -o ./build/argsParser.o ./spanish1/src/content/ArgsParser.cpp
-- g++ -c -o ./build/Component.o ./spanish1/src/content/Component.cpp
-- g++ -c -o ./build/Content.o ./spanish1/src/content/Content.cpp
-- g++ -c -o ./build/FileReader.o ./spanish1/src/content/FileReader.cpp
-- g++ -c -o ./build/Parser.o ./spanish1/src/content/Parser.cpp
-- g++ -c -o ./build/Rule.o ./spanish1/src/content/Rule.cpp
-- g++ -c -o ./build/Selector.o ./spanish1/src/content/Selector.cpp
-- g++ -c -o ./build/VerbBase.o ./spanish1/src/content/VerbBase.cpp
-- g++ -c -o ./build/Word.o ./spanish1/src/content/Word.cpp
-- g++ -c -o ./build/spanish1.o ./spanish1/src/main/spanish1.cpp
-- g++ -o ./build/conjugator ./build/argsParser.o ./build/Component.o ./build/Content.o ./build/FileReader.o ./build/Parser.o ./build/Rule.o ./build/Selector.o ./build/VerbBase.o ./build/Word.o ./build/spanish1.o -lm
-- g++  -o lookup ./LookupVerb/src/FileReader.cpp ./LookupVerb/src/InfContent.cpp ./LookupVerb/src/LookupVerb.cpp ./LookupVerb/src/Parser.cpp
 - cd spanish1/src/content
+- g++ ArgsParser.cpp Component.cpp Content.cpp FileReader.cpp Parser.cpp Rule.cpp Selector.cpp VerbBase.cpp Word.cpp -I../main ../main/spanish1.cpp -o ../../../build/conjugator
+- g++  -o lookup ./LookupVerb/src/FileReader.cpp ./LookupVerb/src/InfContent.cpp ./LookupVerb/src/LookupVerb.cpp ./LookupVerb/src/Parser.cpp
 - g++ ArgsParser.cpp Component.cpp FileReader.cpp Selector.cpp Rule.cpp VerbBase.cpp Word.cpp Content.cpp Parser.cpp -I../../../ITestSuite/src  ../../../TestSuite/src/main.cpp -o ../../../build/unittest
 - cd ../../../build
 - ./unittest
