@@ -19,5 +19,5 @@ script:
 - g++  -o lookup ./LookupVerb/src/FileReader.cpp ./LookupVerb/src/InfContent.cpp ./LookupVerb/src/LookupVerb.cpp ./LookupVerb/src/Parser.cpp
 - ls -lah
 - g++ -c -o ./build/testmain.o ./TestSuite/src/main.cpp
-- g++ -o ./build/unittest ./build/argsParser.o ./build/Selector.o ./build/Content.o ./build/Parser.o ./build/testmain.o
+- g++ -o ./build/unittest ./build/argsParser.o ./build/Selector.o ./build/Content.o ./build/Parser.o ./build/testmain.o -lm
 - ./build/unittest
