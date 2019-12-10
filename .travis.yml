@@ -7,9 +7,10 @@ notifications:
     - jrhewitt68@gmail.com
 script:
 - mkdir build
-- cd spanish1/src/content
+- cd LookupVerb/src
+- g++  -o ../../build/lookup FileReader.cpp InfContent.cpp LookupVerb.cpp Parser.cpp
+- cd ../../spanish1/src/content
 - g++ ArgsParser.cpp Component.cpp Content.cpp FileReader.cpp Parser.cpp Rule.cpp Selector.cpp VerbBase.cpp Word.cpp -I../main ../main/spanish1.cpp -o ../../../build/conjugator
-- g++  -o lookup ./LookupVerb/src/FileReader.cpp ./LookupVerb/src/InfContent.cpp ./LookupVerb/src/LookupVerb.cpp ./LookupVerb/src/Parser.cpp
 - g++ ArgsParser.cpp Component.cpp FileReader.cpp Selector.cpp Rule.cpp VerbBase.cpp Word.cpp Content.cpp Parser.cpp -I../../../ITestSuite/src  ../../../TestSuite/src/main.cpp -o ../../../build/unittest
 - cd ../../../build
 - ./unittest
