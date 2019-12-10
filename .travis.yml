@@ -4,8 +4,8 @@ compiler: gcc
 os: linux
 
 script:
-- rmdir build
-- mkdir 
+- rm -r build 2> /dev/null
+- mkdir build
 - g++ -c -o ./build/argsParser.o ./spanish1/src/content/ArgsParser.cpp
 - g++ -c -o ./build/Component.o ./spanish1/src/content/Component.cpp
 - g++ -c -o ./build/Content.o ./spanish1/src/content/Content.cpp
