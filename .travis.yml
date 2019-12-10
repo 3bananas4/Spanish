@@ -18,6 +18,6 @@ script:
 - g++ -o ./build/conjugator ./build/argsParser.o ./build/Component.o ./build/Content.o ./build/FileReader.o ./build/Parser.o ./build/Rule.o ./build/Selector.o ./build/VerbBase.o ./build/Word.o ./build/spanish1.o -lm
 - g++  -o lookup ./LookupVerb/src/FileReader.cpp ./LookupVerb/src/InfContent.cpp ./LookupVerb/src/LookupVerb.cpp ./LookupVerb/src/Parser.cpp
 - cd spanish1/src/content
-- g++ ArgsParser.cpp Component.cpp FileReader.cpp Selector.cpp Rule.cpp VerbBase.cpp Word.cpp Content.cpp Parser.cpp -../../../ITestSuite/src TestSuite/src/main.cpp -o ../../../build/unittest
+- g++ ArgsParser.cpp Component.cpp FileReader.cpp Selector.cpp Rule.cpp VerbBase.cpp Word.cpp Content.cpp Parser.cpp -I../../../ITestSuite/src  ../../../TestSuite/src/main.cpp -o ../../../build/unittest
 - cd ../../../build
 - ./unittest
