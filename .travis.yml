@@ -4,20 +4,24 @@ compiler: gcc
 os: linux
 notifications:
   email:
-    - jrhewitt68@gmail.com
+  - jrhewitt68@gmail.com
 script:
 - mkdir build
 - cd LookupVerb/src
 - g++  -o ../../build/lookup FileReader.cpp InfContent.cpp LookupVerb.cpp Parser.cpp
 - cd ../../spanish1/src/content
-- g++ ArgsParser.cpp Component.cpp Content.cpp FileReader.cpp Parser.cpp Rule.cpp Selector.cpp VerbBase.cpp Word.cpp -I../main ../main/spanish1.cpp -o ../../../build/conjugator
-- g++ ArgsParser.cpp Component.cpp FileReader.cpp Selector.cpp Rule.cpp VerbBase.cpp Word.cpp Content.cpp Parser.cpp ../../../TestSuite/src/main.cpp -o ../../../build/unittest
+- g++ ArgsParser.cpp Component.cpp Content.cpp FileReader.cpp Parser.cpp Rule.cpp
+  Selector.cpp VerbBase.cpp Word.cpp -I../main ../main/spanish1.cpp -o ../../../build/conjugator
+- g++ ArgsParser.cpp Component.cpp FileReader.cpp Selector.cpp Rule.cpp VerbBase.cpp
+  Word.cpp Content.cpp Parser.cpp ../../../TestSuite/src/main.cpp -o ../../../build/unittest
 - cd ../../../build
-- ./unittest
+- "./unittest"
 deploy:
   provider: releases
-  file_glob: true
-  file: build/*
   skip_cleanup: true
+  file_glob: true
+  api_key:
+    secure: P5yfH93GkFNiztu/CGi6lARz+pO4W4SFkhWWNbSv4yfT1cWw/I9o8GmX296ZMKz/vwDre3cKsxa0OoHpuJZrhY1fl8u389r7mwothh12/fJacVPMg1JWaMQ/yr9Ket6/JJK9AlZyLlU4v9cKS9QwrpBAc2gOhgzZOROB2q1pqRrNa5FoZy3Jay8CvYLiz/h2OMDVclS/wksD7bf0fG+uYcRsEDPN2H9lFSmnV5mQrZeoWEGaV162XKixuWpdR2zJZSy7PQjsgrJXhkb5kabEx62+xUaiLSWrRJQuAFQetJ6Lp1S2DPSu5IN48JNNr6bJgxahPkXh8tW37w2DSTRedBYhun0YnmxqDqdFBQBAfD8Jz3hIZsOLbhhuNjBuP/YAnXz4XV53Q9DqKHFa2IqKJdZ6iDxQTA22I7iRFB7pZvUK+tooLOss1wbmsqQpHaTOOHKV/1Qu30aoHQJrFQSjB9DhZMMvytrAYs4cD1JmATlR8yIktW+oU8DQmBUMS35PAuDqIqCGfyo/CBd7m3V0cx4eyFw6ZZS+gqPV1u+/4TUVGxVhGMCaJGoy42nLWPf/XXOQJjV/wlnQvlqQ5VAgZd+riLaMqu26JqbduwFSc4WG7n5DoIFhM68mnteMJp7bODyysBQAbJvKJPN/au8h/ifRHp5RonOMpRTh5fdi7Vo=
+  file: build/*
   on:
-    tags: true
+    repo: 3bananas4/Spanish
