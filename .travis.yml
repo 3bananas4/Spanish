@@ -15,7 +15,7 @@ script:
 - g++ ArgsParser.cpp Component.cpp FileReader.cpp Selector.cpp Rule.cpp VerbBase.cpp
   Word.cpp Content.cpp Parser.cpp ../../../TestSuite/src/main.cpp -o ../../../build/unittest
 - cd ../../../build
-- "./unittest
+- ./unittest
 - cd ..
 - ls -lah
 deploy:
