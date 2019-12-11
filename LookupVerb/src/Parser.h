@@ -59,7 +59,6 @@ class Parser {
 
 	static inline std::vector<std::string> split(const std::string &input,char ch)
 	{
-		//char ch = ':';
 		size_t start=0;
 		size_t end=input.find_first_of(ch);
 

@@ -81,6 +81,7 @@ int openApp(const string &command)
 }
 
 int interactiveMode(
+		const std::string &app,
 		function<vector<string>(const string&)> lookup,
 		function<vector<string>(const string &,char)> parser)
 {
@@ -91,8 +92,13 @@ int interactiveMode(
 			break;
 		}
 		auto userparams = parser(lineInput,' ');
-		openApp( createCommand("./spanish1",lookup(userparams[0]),userparams[1]) );
-		cout << ":";
+		if(userparams.size()<2u){
+			cout << "Please ensure both an infinitive and a conjugation form are provided e.g. make 1" << endl << ":";
+		}
+		else {
+			openApp( createCommand("./"+app,lookup(userparams[0]),userparams[1]) );
+			cout << ":";
+		}
 	}
 	return 0;
 }
@@ -103,17 +109,18 @@ int main(int argc,char* argv[]) {
 	auto parser = [](const string& s){return Parser::Process(s);};
 	unsigned index=1;
 	if(argv[1][0]=='-'){
-		index=2;
+		index=3;
 	}
 	FileReader fr(argv[index],[&content,&parser](const std::string& a){content.insert(a,parser);});
 
-	// interactive mode with inner command prompt - ./Lookup -i verbs.json
+	// interactive mode with inner command prompt - ./Lookup -i app verbs.json
 	if(strcmp(argv[1],"-i")==0){
 		interactiveMode(
+			argv[2],
 			[&content](const string& english){return content.Lookup(english);},
 			[](const string& s,char ch){return Parser::Process(s,ch);});
 	}
-	// generate input to downstream pipe into spanish1 - ./Lookup verbs.json have 2
+	// generate input to downstream pipe into app - ./Lookup verbs.json have 2
 	else if(argc>3){
 		feedPipe(content.Lookup(static_cast<string>(argv[index+1])),argv[3]);
 	}

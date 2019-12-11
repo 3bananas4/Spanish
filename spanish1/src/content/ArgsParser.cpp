@@ -78,6 +78,7 @@ ArgsParser::~ArgsParser() {
 
 void ArgsParser::ExtractFlags(const std::string &args )
 {
+	cout << args << endl;
 	char ch = ' ';
 	size_t start=0;
 	size_t end=args.find_first_of(ch);
