@@ -17,22 +17,25 @@ class Content;
 
 class Selector {
 	std::shared_ptr<ArgsParser> argsParser_;
+	std::function<void(const std::string &output)> display_;
 
 	int displayFileContents();
-	//int conjugateVerb();
-
-
 
 public:
 	Selector(){}
-	Selector(const std::vector<std::string> &params);
+	Selector(const std::vector<std::string> &params,std::function<void(const std::string &output)> display);
 	virtual ~Selector(){}
 
 	int conjugate();
-	int conjugateVerb(std::shared_ptr<ArgsParser> &argsParser,std::function<void(const std::string &)> output);
+	int conjugateVerb(std::shared_ptr<ArgsParser> &argsParser);
 
-	int displayVerbs(std::function<void(std::shared_ptr<Content>& content)> load,std::function<void(const std::string &output)> display);
-	int displayWords(std::function<void(std::shared_ptr<Content>& content)> load,const std::string & wordType,std::function<void(const std::string &output)> display);
+	int display(
+		std::shared_ptr<Content> content,
+		std::function<void(std::shared_ptr<Content>& content)> load,
+		const std::string & wordType);
+
+	//int displayVerbs(std::function<void(std::shared_ptr<Content>& content)> load);
+	//int displayWords(std::function<void(std::shared_ptr<Content>& content)> load,const std::string & wordType);
 
 	int testFunction(int value){return 2*value;}
 };

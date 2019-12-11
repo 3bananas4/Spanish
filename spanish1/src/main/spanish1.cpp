@@ -26,9 +26,10 @@ int main(int argc,char *argv[]) {
 		params.emplace_back(argv[index]);
 	}
 
-	Selector sel(params);
+	auto display = [](const string &output){cout << output << endl;};
+	Selector sel(params,display);
 	if( isatty(fileno(stdin))){
-		return sel.conjugate(); // run directly from the command line
+		return sel.conjugate(/*display*/); // run directly from the command line
 	}
 
 	string lineInput;
@@ -39,7 +40,7 @@ int main(int argc,char *argv[]) {
 			cout << "Invalid input" << endl;
 			return -1;
 		}
-		sel.conjugateVerb(ap,[](const string &output){cout << output << endl;});
+		sel.conjugateVerb(ap/*,display*/);//[](const string &output){cout << output << endl;});
 	}
 	return 0;
 }

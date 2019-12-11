@@ -33,9 +33,10 @@ using namespace std;
 //
 //}
 
-Selector::Selector(const vector<string> &params)
+Selector::Selector(const vector<string> &params,function<void(const string &output)> display)
 {
 	argsParser_ = make_shared<ArgsParser>(params);
+	display_ = display;
 }
 
 //Selector::~Selector() {
@@ -51,31 +52,34 @@ int Selector::conjugate()
 		return displayFileContents();
 	}
 	// conjugate a single entry from the command line
-	return conjugateVerb(argsParser_,[](const string& output){cout << output << endl;});
+	return conjugateVerb(argsParser_);
 }
 
 int Selector::displayFileContents()
 {
 	if(argsParser_->Datatype()=="Verbs")
 	{
-		displayVerbs([this](shared_ptr<Content>& content){
-			auto parser = [](const string& s){return VerbParser::Process(s);};
-			FileReader fr(argsParser_->Filename(),[&content,&parser](const std::string& a){content->insert(a,parser);});
-		},
-		[](const string &output){ cout << output << endl;});
+		display(
+			make_shared<VerbContent>(),
+			[this](shared_ptr<Content>& content){
+				auto parser = [](const string& s){return VerbParser::Process(s);};
+				FileReader fr(argsParser_->Filename(),[&content,&parser](const std::string& a){content->insert(a,parser);});
+			},"");
 	}
 	else
 	{
-		displayWords([this](shared_ptr<Content>& content){
-			auto parser = [](const string& s){return WordParser::Process(s);};
-			FileReader fr(argsParser_->Filename(),[&content,&parser](const std::string& a){content->insert(a,parser);});
-		},argsParser_->Wordtype(),
-		[](const string &output){ cout << output << endl;});
+		display(
+			make_shared<GeneralContent>(),
+			[this](shared_ptr<Content>& content){
+				auto parser = [](const string& s){return WordParser::Process(s);};
+				FileReader fr(argsParser_->Filename(),[&content,&parser](const std::string& a){content->insert(a,parser);});
+			},
+			argsParser_->Wordtype());
 	}
 	return 0;
 }
 
-int Selector::conjugateVerb(shared_ptr<ArgsParser> &argsParser,function<void(const string &)> output)
+int Selector::conjugateVerb(shared_ptr<ArgsParser> &argsParser)
 {
 	shared_ptr<VerbBase> inf = make_shared<VerbBase>(argsParser->PsuedoInfinitive());
 
@@ -109,29 +113,16 @@ int Selector::conjugateVerb(shared_ptr<ArgsParser> &argsParser,function<void(con
 			ss << " ";
 		}
 	}
-	output(ss.str());
-	//cout << endl;
+	display_(ss.str());
 	return 0;
 }
 
-int Selector::displayVerbs(
+int Selector::display(
+		shared_ptr<Content> content,
 		function<void(shared_ptr<Content>& content)> load,
-		function<void(const string &output)> display)
+		const string & wordType)
 {
-	shared_ptr<Content> content =make_shared<VerbContent>();
 	load(content);
-
-	content->Display("",display);//[](stringstream &output){ cout << output.str() << endl;});
-	return 0;
-}
-
-int Selector::displayWords(
-		function<void(shared_ptr<Content>& content)> load,
-		const string & wordType,
-		function<void(const string &output)> display)
-{
-	shared_ptr<Content> content =make_shared<GeneralContent>();
-	load(content);
-	content->Display(wordType.empty()?"All":wordType,display);//[](const string &output){ cout << output << endl;});
+	content->Display(wordType,display_);
 	return 0;
 }

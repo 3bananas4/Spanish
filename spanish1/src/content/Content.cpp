@@ -51,6 +51,8 @@ void GeneralContent::insert(const string &entry,function<vector<string>(const st
 
 	shared_ptr<Word> w = make_shared<Word>(output,parse);
 	dictionary_[w->English()]=w;
+
+	//cout << "Word : " << w->English() << " " << w->Foreign() << endl;
 }
 
 void GeneralContent::Display(const std::string &wordtype,function<void(const string & s)> output)

@@ -49,10 +49,10 @@ void testInfWithStr(const std::string &initializer,const std::string & testval,b
 void testConjWithVec(const std::vector<std::string> &params,const std::string &testval,bool truth)
 {
 	std::shared_ptr<ArgsParser> ap = std::make_shared<ArgsParser>(params);
-	Selector sel(params);
+	std::string ss;
+	Selector sel(params,[&ss](const std::string& output){ss=output;});
 	if(truth){
-		std::string ss;
-		sel.conjugateVerb(ap,[&ss](const std::string& output){ss=output;});
+		sel.conjugateVerb(ap);
 		REQUIRE(ss.compare(testval)==0);
 	}
 }
@@ -60,18 +60,15 @@ void testConjWithVec(const std::vector<std::string> &params,const std::string &t
 void testConjWithStr(const std::string &initializer,const std::string &testval,bool truth)
 {
 	std::shared_ptr<ArgsParser> ap = std::make_shared<ArgsParser>(initializer);
-	Selector sel;
+	std::string ss;
+	Selector sel({"-w"},[&ss](const std::string& output){ss=output;});
 	if(truth){
-		std::string ss;
-		sel.conjugateVerb(ap,[&ss](const std::string& output){ss=output;});
+		sel.conjugateVerb(ap);
 		REQUIRE(ss.compare(testval)==0);
 	}
 }
 
 TEST_CASE( "infinitives with vector", "" ) {
-	Selector sel;
-	REQUIRE(sel.testFunction(2)==4);
-
 	SECTION("simple infinitive"){testInfWithVec({app,"-i","comer","1"},"comer",true);}
 	SECTION("check against garbage value"){testInfWithVec({app,"-i","comer","1"},"garbage",false);}
 	SECTION("infinitive with vowel change"){testInfWithVec({app,"-ic","entender","1","e_ie"},"entender",true);}
@@ -80,9 +77,6 @@ TEST_CASE( "infinitives with vector", "" ) {
 }
 
 TEST_CASE( "infinitives with string", "" ) {
-	//Selector sel;
-	//REQUIRE(sel.testFunction(2)==4);
-
 	SECTION("simple infinitive"){testInfWithStr("-i comer 1","comer",true);}
 	SECTION("include app name to test error"){testInfWithStr(app+" -iw comer 1","comer",false);}
 	SECTION("check against garbage value"){testInfWithStr("-i comer 1","garbage",false);}
@@ -172,29 +166,31 @@ TEST_CASE( "suppressed negated reflexive stemchange string input","" ) {
 }
 
 TEST_CASE("Test reading verbs from file"){
-	Selector sel;
 	std::stringstream ss;
+	Selector sel({"-w"},[&ss](const std::string &output){ ss<<"["<<output<<"]";});
 
 	auto parser = [](const std::string& s){return VerbParser::Process(s);};
 
-	sel.displayVerbs([&parser](std::shared_ptr<Content>& content){
-		content->insert("{speak:\"-i hablar 1\"}",parser);
-		content->insert("{sing:\"-i cantar 1\"}",parser); },
-		[&ss](const std::string &output){ ss<<"["<<output<<"]";});
+	sel.display(
+		std::make_shared<VerbContent>(),
+		[&parser](std::shared_ptr<Content>& content){
+			content->insert("{speak:\"-i hablar 1\"}",parser);
+			content->insert("{sing:\"-i cantar 1\"}",parser); },
+		"");
 
 	REQUIRE(ss.str().compare("[sing : cantar][speak : hablar]")==0);
 }
 
 TEST_CASE("Test reading words from file"){
-	Selector sel;
 	std::stringstream ss;
-
+	Selector sel({"-w"},[&ss](const std::string &output){ ss<<"["<<output<<"]";});
 	auto parser = [](const std::string& s){return VerbParser::Process(s);};
-
-	sel.displayWords([&parser](std::shared_ptr<Content>& content){
-		content->insert("{\"foreign\" : \"hola\",\"english\" : \"hello\",\"wordtype\" : \"expr\"}",parser);
-		content->insert("{\"foreign\" : \"la botella\",\"english\" : \"bottle\",\"wordtype\" : \"noun\"}",parser); },
-		"",
-		[&ss](const std::string &output){ ss<<"["<<output<<"]";});
+	sel.display(
+		std::make_shared<GeneralContent>(),
+		[&parser](std::shared_ptr<Content>& content){
+			content->insert("{\"foreign\" : \"hola\",\"english\" : \"hello\",\"wordtype\" : \"expr\"}",parser);
+			content->insert("{\"foreign\" : \"la botella\",\"english\" : \"bottle\",\"wordtype\" : \"noun\"}",parser); },
+		"All"
+		);
 	REQUIRE(ss.str().compare("[English: bottle, Spanish: la botella, Wordtype: noun][English: hello, Spanish: hola, Wordtype: expr]")==0);
 }
