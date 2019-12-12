@@ -9,10 +9,10 @@
 #include <sstream>
 #include <memory>
 
-#include "../../spanish1/src/content/Selector.h"
-#include "../../spanish1/src/content/ArgsParser.h"
-#include "../../spanish1/src/content/Content.h"
-#include "../../spanish1/src/content/Parser.h"
+#include "Selector.h"
+#include "ArgsParser.h"
+#include "Content.h"
+#include "Parser.h"
 
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch.hpp"
@@ -169,7 +169,7 @@ TEST_CASE("Test reading verbs from file"){
 	std::stringstream ss;
 	Selector sel({"-w"},[&ss](const std::string &output){ ss<<"["<<output<<"]";});
 
-	auto parser = [](const std::string& s){return VerbParser::Process(s);};
+	auto parser = [](const std::string& s){return Parser::Process(s);};
 
 	sel.display(
 		std::make_shared<VerbContent>(),
@@ -184,7 +184,7 @@ TEST_CASE("Test reading verbs from file"){
 TEST_CASE("Test reading words from file"){
 	std::stringstream ss;
 	Selector sel({"-w"},[&ss](const std::string &output){ ss<<"["<<output<<"]";});
-	auto parser = [](const std::string& s){return VerbParser::Process(s);};
+	auto parser = [](const std::string& s){return Parser::Process(s);};
 	sel.display(
 		std::make_shared<GeneralContent>(),
 		[&parser](std::shared_ptr<Content>& content){

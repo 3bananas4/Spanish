@@ -55,9 +55,8 @@ public:
 		return after;
 	}
 
-	static inline std::vector<std::string> split(const std::string &input)
+	static inline std::vector<std::string> split(const std::string &input,char ch=':')
 	{
-		char ch = ':';
 		size_t start=0;
 		size_t end=input.find_first_of(ch);
 
@@ -80,21 +79,35 @@ public:
 	Parser();
 	virtual ~Parser();
 
-	static inline std::vector<std::string> Process(const std::string & input)
+	static inline std::vector<std::string> Process(const std::string & input,char ch=':')
 	{
 		std::string output = stripCharacters(input);
-		return split(output);
+		return split(output,ch);
 	}
 };
 
+class LookupParser : public Parser {
+public:
+	LookupParser(){}
+	virtual ~LookupParser(){}
+
+	static inline std::vector<std::string> Process(const std::string & input)
+	{
+		std::string output = stripCharacters(input);
+		auto t1 =  split(output,':');
+		auto t2 =  split(t1[1],' ');
+		t2.insert(t2.begin(),t1[0]);
+		return t2;
+	}
+};
+/*
 class VerbParser : public Parser {
 public:
 	VerbParser(){}
 	virtual ~VerbParser(){}
 
-	static inline std::vector<std::string> split(const std::string &input)
+		static inline std::vector<std::string> split(const std::string &input,char ch=':')
 	{
-		char ch = ':';
 		size_t start=0;
 		size_t end=input.find_first_of(ch);
 
@@ -127,9 +140,8 @@ public:
 	WordParser(){}
 	virtual ~WordParser(){}
 
-	static inline std::vector<std::string> split(const std::string &input)
+	static inline std::vector<std::string> split(const std::string &input,char ch = ':')
 	{
-		char ch = ':';
 		size_t start=0;
 		size_t end=input.find_first_of(ch);
 
@@ -156,6 +168,17 @@ public:
 	}
 
 };
-
+*/
+/* Need this from the Lookup form of the Parser
+ * ALso uses the second form of process in the base class
+ static inline std::vector<std::string> Process(const std::string & input)
+	{
+		std::string output = stripCharacters(input);
+		auto t1 =  split(output,':');
+		auto t2 =  split(t1[1],' ');
+		t2.insert(t2.begin(),t1[0]);
+		return t2;
+	}
+ */
 
 #endif /* PARSER_H_ */

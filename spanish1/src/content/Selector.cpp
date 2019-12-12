@@ -62,7 +62,7 @@ int Selector::displayFileContents()
 		display(
 			make_shared<VerbContent>(),
 			[this](shared_ptr<Content>& content){
-				auto parser = [](const string& s){return VerbParser::Process(s);};
+				auto parser = [](const string& s){return Parser::Process(s);};
 				FileReader fr(argsParser_->Filename(),[&content,&parser](const std::string& a){content->insert(a,parser);});
 			},"");
 	}
@@ -71,7 +71,7 @@ int Selector::displayFileContents()
 		display(
 			make_shared<GeneralContent>(),
 			[this](shared_ptr<Content>& content){
-				auto parser = [](const string& s){return WordParser::Process(s);};
+				auto parser = [](const string& s){return Parser::Process(s);};
 				FileReader fr(argsParser_->Filename(),[&content,&parser](const std::string& a){content->insert(a,parser);});
 			},
 			argsParser_->Wordtype());
@@ -79,7 +79,7 @@ int Selector::displayFileContents()
 	return 0;
 }
 
-int Selector::conjugateVerb(shared_ptr<ArgsParser> &argsParser)
+shared_ptr<VerbBase> Selector::BuildVerb(shared_ptr<ArgsParser> &argsParser)
 {
 	shared_ptr<VerbBase> inf = make_shared<VerbBase>(argsParser->PsuedoInfinitive());
 
@@ -96,8 +96,13 @@ int Selector::conjugateVerb(shared_ptr<ArgsParser> &argsParser)
 	shared_ptr<VerbBase> negative    = make_shared<NegateDecorator>(stemChange,argsParser->Negate());
 	shared_ptr<VerbBase> personForm	 = make_shared<PersonDecorator>(negative,argsParser->Person());
 	shared_ptr<VerbBase> suppressed  = make_shared<SuppressDecorator>(personForm,argsParser->Suppress());
+	return suppressed;
+}
 
-	auto x = suppressed->conjugate_struct(static_cast<VerbBase::Conjugation>(atoi(argsParser->Conjugation().c_str())));
+int Selector::conjugateVerb(shared_ptr<ArgsParser> &argsParser)
+{
+	shared_ptr<VerbBase> verb = BuildVerb(argsParser);
+	auto x = verb->conjugate_struct(static_cast<VerbBase::Conjugation>(atoi(argsParser->Conjugation().c_str())));
 
 	stringstream ss;
 	for(auto c: x){

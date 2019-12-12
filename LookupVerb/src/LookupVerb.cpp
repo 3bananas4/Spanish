@@ -106,7 +106,7 @@ int interactiveMode(
 int main(int argc,char* argv[]) {
 
 	InfContent content;
-	auto parser = [](const string& s){return Parser::Process(s);};
+	auto parser = [](const string& s){return LookupParser::Process(s);};
 	unsigned index=1;
 	if(argv[1][0]=='-'){
 		index=3;

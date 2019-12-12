@@ -14,12 +14,14 @@
 
 class ArgsParser;
 class Content;
+class VerbBase;
 
 class Selector {
 	std::shared_ptr<ArgsParser> argsParser_;
 	std::function<void(const std::string &output)> display_;
 
 	int displayFileContents();
+	std::shared_ptr<VerbBase> BuildVerb(std::shared_ptr<ArgsParser> &argsParser);
 
 public:
 	Selector(){}
@@ -33,10 +35,6 @@ public:
 		std::shared_ptr<Content> content,
 		std::function<void(std::shared_ptr<Content>& content)> load,
 		const std::string & wordType);
-
-	//int displayVerbs(std::function<void(std::shared_ptr<Content>& content)> load);
-	//int displayWords(std::function<void(std::shared_ptr<Content>& content)> load,const std::string & wordType);
-
 	int testFunction(int value){return 2*value;}
 };
 
