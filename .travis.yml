@@ -8,7 +8,8 @@ notifications:
 script:
 - chmod a+x buildscript.sh
 - ./buildscript.sh
-- /build/unittest
+- cd ~/build
+- ./testsuite
 deploy:
   provider: releases
   skip_cleanup: true
