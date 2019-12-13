@@ -8,9 +8,9 @@ notifications:
 script:
 - chmod a+x buildscript.sh
 - ./buildscript.sh
-- cd ~/build
+#- cd ~/build
 #- ./testsuite
-- ls -lah
+#- ls -lah
 deploy:
   provider: releases
   skip_cleanup: true
