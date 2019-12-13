@@ -6,17 +6,9 @@ notifications:
   email:
   - jrhewitt68@gmail.com
 script:
-- mkdir build
-- cd LookupVerb/src
-- g++  -o ../../build/lookup -I../../shared/src/ FileReader.cpp InfContent.cpp LookupVerb.cpp ../../shared/src/Parser.cpp
-- cd ../../spanish1/src/content
-- g++ -I../../../shared/src/ ArgsParser.cpp Component.cpp Content.cpp FileReader.cpp ../../../shared/src/Parser.cpp Rule.cpp
-  Selector.cpp VerbBase.cpp Word.cpp -I../main ../main/spanish1.cpp -o ../../../build/conjugator
-- g++ -I./ -I../../../shared/src/ ArgsParser.cpp Component.cpp FileReader.cpp Selector.cpp Rule.cpp VerbBase.cpp Word.cpp Content.cpp ../../../shared/src/Parser.cpp ../../../TestSuite/src/main.cpp -o ../../../build/unittest
-- cd ../../../build
-- ./unittest
-- cd ..
-- ls -lah
+- chmod a+x buildscript.sh
+- ./buildscript.sh
+- /build/unittest
 deploy:
   provider: releases
   skip_cleanup: true
