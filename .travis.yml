@@ -9,7 +9,8 @@ script:
 - chmod a+x buildscript.sh
 - ./buildscript.sh
 - cd ~/build
-- ./testsuite
+#- ./testsuite
+- ls -lah
 deploy:
   provider: releases
   skip_cleanup: true
