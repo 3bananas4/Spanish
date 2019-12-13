@@ -42,10 +42,4 @@ g++ -c main.cpp  -I../../shared/src -I../../spanish1/src/content -I./
 
 g++ -o ../../build/testsuite main.o -I../../shared/src -I../../spanish1/content -I./ -L../../lib -lshared -lconjugator 
 
-ls -lah
-
-cd ../../../build
-
-ls -lah
-
 
