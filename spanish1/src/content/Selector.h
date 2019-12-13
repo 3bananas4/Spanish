@@ -15,12 +15,13 @@
 class ArgsParser;
 class Content;
 class VerbBase;
+class Parser;
 
 class Selector {
 	std::shared_ptr<ArgsParser> argsParser_;
 	std::function<void(const std::string &output)> display_;
 
-	int displayFileContents();
+	int displayFileContents(std::function<void(std::shared_ptr<Content> content)> loadContent);
 	std::shared_ptr<VerbBase> BuildVerb(std::shared_ptr<ArgsParser> &argsParser);
 
 public:
@@ -28,14 +29,12 @@ public:
 	Selector(const std::vector<std::string> &params,std::function<void(const std::string &output)> display);
 	virtual ~Selector(){}
 
-	int conjugate();
+	int conjugate(std::function<void(std::shared_ptr<Content> content)> loadContent);
 	int conjugateVerb(std::shared_ptr<ArgsParser> &argsParser);
 
-	int display(
-		std::shared_ptr<Content> content,
-		std::function<void(std::shared_ptr<Content>& content)> load,
-		const std::string & wordType);
 	int testFunction(int value){return 2*value;}
+
+	std::shared_ptr<ArgsParser> Arguments() const {return argsParser_;}
 };
 
 #endif /* SELECTOR_H_ */

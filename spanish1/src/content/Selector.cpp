@@ -17,9 +17,7 @@
 #include <vector>
 #include <functional>
 
-#include "FileReader.h"
 #include "Content.h"
-#include "Parser.h"
 #include "VerbBase.h"
 #include "ArgsParser.h"
 #include "Word.h"
@@ -28,10 +26,6 @@
 #include "stdio.h"
 
 using namespace std;
-//Selector::Selector() {
-//	// TODO Auto-generated constructor stub
-//
-//}
 
 Selector::Selector(const vector<string> &params,function<void(const string &output)> display)
 {
@@ -39,43 +33,30 @@ Selector::Selector(const vector<string> &params,function<void(const string &outp
 	display_ = display;
 }
 
-//Selector::~Selector() {
-//	// TODO Auto-generated destructor stub
-//}
-
-int Selector::conjugate()
+int Selector::conjugate(function<void(shared_ptr<Content> content)> loadContent)
 {
 	if(!argsParser_->Valid()){
+		cout << "Invalid arguments" << endl;
 		return -1;
 	}
 	if(argsParser_->Infinitive().empty() && !argsParser_->Filename().empty()){
-		return displayFileContents();
+		return displayFileContents(loadContent);
 	}
 	// conjugate a single entry from the command line
 	return conjugateVerb(argsParser_);
 }
 
-int Selector::displayFileContents()
+int Selector::displayFileContents(function<void(shared_ptr<Content> content)> loadContent)
 {
-	if(argsParser_->Datatype()=="Verbs")
-	{
-		display(
-			make_shared<VerbContent>(),
-			[this](shared_ptr<Content>& content){
-				auto parser = [](const string& s){return Parser::Process(s);};
-				FileReader fr(argsParser_->Filename(),[&content,&parser](const std::string& a){content->insert(a,parser);});
-			},"");
-	}
-	else
-	{
-		display(
-			make_shared<GeneralContent>(),
-			[this](shared_ptr<Content>& content){
-				auto parser = [](const string& s){return Parser::Process(s);};
-				FileReader fr(argsParser_->Filename(),[&content,&parser](const std::string& a){content->insert(a,parser);});
-			},
-			argsParser_->Wordtype());
-	}
+	string wordtype = (argsParser_->Datatype()=="Verbs")?"":argsParser_->Wordtype();
+	shared_ptr<Content> content;
+	if(argsParser_->Datatype()=="Verbs"){
+		content = make_shared<VerbContent>();}
+	else {
+		content = make_shared<GeneralContent>();}
+
+	loadContent(content);
+	content->Display(wordtype,display_);
 	return 0;
 }
 
@@ -119,15 +100,5 @@ int Selector::conjugateVerb(shared_ptr<ArgsParser> &argsParser)
 		}
 	}
 	display_(ss.str());
-	return 0;
-}
-
-int Selector::display(
-		shared_ptr<Content> content,
-		function<void(shared_ptr<Content>& content)> load,
-		const string & wordType)
-{
-	load(content);
-	content->Display(wordType,display_);
 	return 0;
 }

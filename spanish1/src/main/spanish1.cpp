@@ -14,8 +14,11 @@
 
 #include "unistd.h"
 #include "stdio.h"
-#include "../content/Selector.h"
-#include "../content/ArgsParser.h"
+#include "Selector.h"
+#include "ArgsParser.h"
+#include "FileReader.h"
+#include "Content.h"
+#include "Parser.h"
 
 using namespace std;
 
@@ -29,7 +32,12 @@ int main(int argc,char *argv[]) {
 	auto display = [](const string &output){cout << output << endl;};
 	Selector sel(params,display);
 	if( isatty(fileno(stdin))){
-		return sel.conjugate(); // run directly from the command line
+		auto parser = [](const string& s){return Parser::Process(s);};
+
+		auto loader = [&parser,&sel](shared_ptr<Content> content){
+			FileReader fr( sel.Arguments()->Filename(),[&parser,&content](const std::string& a){content->insert(a,parser);});
+		};
+		return sel.conjugate(loader);
 	}
 
 	string lineInput;

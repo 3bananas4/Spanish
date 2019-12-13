@@ -165,32 +165,31 @@ TEST_CASE( "suppressed negated reflexive stemchange string input","" ) {
 	SECTION("p4"){testConjWithStr("-isnp reponerse 4 repongo","no nos reponemos",true);}
 }
 
-TEST_CASE("Test reading verbs from file"){
+void testReadFromFile(const std::vector<std::string> &filecontents,const std::string &wordType,const std::string &target)
+{
 	std::stringstream ss;
-	Selector sel({"-w"},[&ss](const std::string &output){ ss<<"["<<output<<"]";});
+	Selector sel({"dummyapp","-fwd","dummyfile",wordType},[&ss](const std::string &output){ ss<<"["<<output<<"]";});
 
 	auto parser = [](const std::string& s){return Parser::Process(s);};
 
-	sel.display(
-		std::make_shared<VerbContent>(),
-		[&parser](std::shared_ptr<Content>& content){
-			content->insert("{speak:\"-i hablar 1\"}",parser);
-			content->insert("{sing:\"-i cantar 1\"}",parser); },
-		"");
+	auto loader = [&parser,&filecontents](std::shared_ptr<Content> content){
+		for(auto s : filecontents){content->insert(s,parser);}
+	};
+	sel.conjugate(loader);
 
-	REQUIRE(ss.str().compare("[sing : cantar][speak : hablar]")==0);
+	REQUIRE(ss.str().compare(target)==0);
 }
 
-TEST_CASE("Test reading words from file"){
-	std::stringstream ss;
-	Selector sel({"-w"},[&ss](const std::string &output){ ss<<"["<<output<<"]";});
-	auto parser = [](const std::string& s){return Parser::Process(s);};
-	sel.display(
-		std::make_shared<GeneralContent>(),
-		[&parser](std::shared_ptr<Content>& content){
-			content->insert("{\"foreign\" : \"hola\",\"english\" : \"hello\",\"wordtype\" : \"expr\"}",parser);
-			content->insert("{\"foreign\" : \"la botella\",\"english\" : \"bottle\",\"wordtype\" : \"noun\"}",parser); },
-		"All"
-		);
-	REQUIRE(ss.str().compare("[English: bottle, Spanish: la botella, Wordtype: noun][English: hello, Spanish: hola, Wordtype: expr]")==0);
+TEST_CASE("Test reading from file"){
+	SECTION("Verbs"){
+		std::vector<std::string> v = {"{speak:\"-i hablar 1\"}","{sing:\"-i cantar 1\"}"};
+		testReadFromFile(v,"Verbs","[sing : cantar][speak : hablar]");
+	}
+	SECTION("Full Word List"){
+		std::vector<std::string> v = {
+			"{\"foreign\" : \"hola\",\"english\" : \"hello\",\"wordtype\" : \"expr\"}",
+			"{\"foreign\" : \"la botella\",\"english\" : \"bottle\",\"wordtype\" : \"noun\"}"};
+		testReadFromFile(v,"","[English: bottle, Spanish: la botella, Wordtype: noun][English: hello, Spanish: hola, Wordtype: expr]");
+	}
+
 }
