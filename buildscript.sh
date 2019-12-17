@@ -27,7 +27,7 @@ g++ -c VerbBase.cpp -I../../../shared/src
 g++ -c Selector.cpp -I../../../shared/src
 g++ -c Word.cpp
 
-ar crf ../../../lib/libconjugator.a ArgsParser.o Content.o Rule.o VerbBase.o Selector.o Word.o
+ar crf ../../../lib/libconjugator.a ../../../shared/src/Component.o ArgsParser.o Content.o Rule.o VerbBase.o Selector.o Word.o
 
 ranlib ../../../lib/libconjugator.a
 
