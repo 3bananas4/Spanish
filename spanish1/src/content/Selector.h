@@ -19,14 +19,14 @@ class Parser;
 
 class Selector {
 	std::shared_ptr<ArgsParser> argsParser_;
-	std::function<void(const std::string &output)> display_;
+	std::function<int(const std::string &output)> display_;
 
 	int displayFileContents(std::function<void(std::shared_ptr<Content> content)> loadContent);
 	std::shared_ptr<VerbBase> BuildVerb(std::shared_ptr<ArgsParser> &argsParser);
 
 public:
 	Selector(){}
-	Selector(const std::vector<std::string> &params,std::function<void(const std::string &output)> display);
+	Selector(const std::vector<std::string> &params,std::function<int(const std::string &output)> display);
 	virtual ~Selector(){}
 
 	int conjugate(std::function<void(std::shared_ptr<Content> content)> loadContent);

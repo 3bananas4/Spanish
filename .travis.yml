@@ -8,9 +8,7 @@ notifications:
 script:
 - chmod a+x buildscript.sh
 - ./buildscript.sh
-- cd build
-- ls -lah
-- ./testsuite
+- ./build/testsuite
 
 deploy:
   provider: releases

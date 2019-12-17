@@ -49,8 +49,6 @@ public:
 	virtual ~Verb();
 
 	inline std::string English() { return english_; }
-	//inline std::string ConjugationRequest() { return conjugationRequest_; }
-
 	std::vector<std::string> Args() {return args_;}
 };
 

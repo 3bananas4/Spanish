@@ -5,29 +5,29 @@ cd shared/src
 # build the object file
 g++ -c Parser.cpp
 g++ -c FileReader.cpp
+g++ -c Component.cpp
 
 # create the archive
-ar crf ../../lib/libshared.a Parser.o FileReader.o
+ar crf ../../lib/libshared.a Parser.o FileReader.o Component.o
 
 # build the index using ranlib
 ranlib ../../lib/libshared.a
 
 cd ../../LookupVerb/src
-g++ -c InfContent.cpp
+g++ -c Feeder.cpp
 g++ -c LookupVerb.cpp -I./ -I../../shared/src
 
-g++ -o ../../build/LookupVerb InfContent.o LookupVerb.o -I./ -I../../shared/src -L../../lib -lshared 
+g++ -o ../../build/LookupVerb Feeder.o LookupVerb.o -I./ -I../../shared/src -L../../lib -lshared 
 ##################################################
 cd ../../spanish1/src/content/
 g++ -c ArgsParser.cpp
 g++ -c Content.cpp
 g++ -c Rule.cpp
-g++ -c VerbBase.cpp
-g++ -c Component.cpp
-g++ -c Selector.cpp
+g++ -c VerbBase.cpp -I../../../shared/src
+g++ -c Selector.cpp -I../../../shared/src
 g++ -c Word.cpp
 
-ar crf ../../../lib/libconjugator.a ArgsParser.o Content.o Rule.o VerbBase.o Component.o Selector.o Word.o
+ar crf ../../../lib/libconjugator.a ArgsParser.o Content.o Rule.o VerbBase.o Selector.o Word.o
 
 ranlib ../../../lib/libconjugator.a
 

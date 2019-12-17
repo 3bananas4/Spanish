@@ -28,7 +28,6 @@ public:
 	VerbBase(const std::string& infinitive);
 	virtual ~VerbBase();
 
-	//virtual std::string conjugate(Conjugation conjugation);
 	virtual std::vector<std::shared_ptr<Component>>& conjugate_struct(Conjugation conjugation);
 
 	static bool isReflexive(const std::string& infinitive){
@@ -57,39 +56,18 @@ protected:
 public:
 	VerbDecorator (std::shared_ptr<VerbBase> decoratedVerb):
 		decoratedVerb_(decoratedVerb) {}
+	~VerbDecorator(){}
 
 	const virtual std::string& Infinitive(){return decoratedVerb_->Infinitive();}
 };
 
-class ARVerbDecorator : public VerbDecorator
+class ConjDecorator : public VerbDecorator
 {
 	std::string verbsuffix(Conjugation conjugation);
 public:
-	ARVerbDecorator (std::shared_ptr<VerbBase> decoratedVerb): VerbDecorator(decoratedVerb) {}
+	ConjDecorator (std::shared_ptr<VerbBase> decoratedVerb): VerbDecorator(decoratedVerb) {}
+	~ConjDecorator(){}
 
-	//std::string conjugate(Conjugation conjugation);
-	std::vector<std::shared_ptr<Component>>& conjugate_struct(Conjugation conjugation);
-	const virtual std::string& Infinitive(){return decoratedVerb_->Infinitive();}
-};
-
-class ERVerbDecorator : public VerbDecorator
-{
-	std::string verbsuffix(Conjugation conjugation);
-public:
-	ERVerbDecorator (std::shared_ptr<VerbBase> decoratedVerb): VerbDecorator(decoratedVerb) {}
-
-	//std::string conjugate(Conjugation conjugation);
-	std::vector<std::shared_ptr<Component>>& conjugate_struct(Conjugation conjugation);
-	const virtual std::string& Infinitive(){return decoratedVerb_->Infinitive();}
-};
-
-class IRVerbDecorator : public VerbDecorator
-{
-	std::string verbsuffix(Conjugation conjugation);
-public:
-	IRVerbDecorator (std::shared_ptr<VerbBase> decoratedVerb): VerbDecorator(decoratedVerb) {}
-
-	//std::string conjugate(Conjugation conjugation);
 	std::vector<std::shared_ptr<Component>>& conjugate_struct(Conjugation conjugation);
 	const virtual std::string& Infinitive(){return decoratedVerb_->Infinitive();}
 };
@@ -99,8 +77,8 @@ class ReflexiveDecorator : public VerbDecorator
 	std::string Pronoun(Conjugation conjugation);
 public:
 	ReflexiveDecorator (std::shared_ptr<VerbBase> decoratedVerb): VerbDecorator(decoratedVerb) {}
+	~ReflexiveDecorator(){}
 
-	//std::string conjugate(Conjugation conjugation);
 	std::vector<std::shared_ptr<Component>>& conjugate_struct(Conjugation conjugation);
 	const virtual std::string& Infinitive(){return decoratedVerb_->Infinitive();}
 };
@@ -108,11 +86,11 @@ public:
 class VowelDecorator : public VerbDecorator
 {
 	std::string vowel_;
-	std::string Modify(Conjugation conjugation,/*size_t pos,*/const std::string &basestring);
+	std::string Modify(Conjugation conjugation,const std::string &basestring);
 public:
 	VowelDecorator (std::shared_ptr<VerbBase> decoratedVerb,std::string vowel): VerbDecorator(decoratedVerb),vowel_(vowel) {}
+	~VowelDecorator(){}
 
-	//std::string conjugate(Conjugation conjugation);
 	std::vector<std::shared_ptr<Component>>& conjugate_struct(Conjugation conjugation);
 	const virtual std::string& Infinitive(){return decoratedVerb_->Infinitive();}
 };
@@ -120,11 +98,11 @@ public:
 class StemDecorator : public VerbDecorator
 {
 	std::string stem_;
-	std::string Modify(Conjugation conjugation,/*size_t pos,*/const std::string & basestring);
+	std::string Modify(Conjugation conjugation,const std::string & basestring);
 public:
 	StemDecorator (std::shared_ptr<VerbBase> decoratedVerb,std::string stem): VerbDecorator(decoratedVerb),stem_(stem) {}
+	~StemDecorator(){}
 
-	//std::string conjugate(Conjugation conjugation);
 	std::vector<std::shared_ptr<Component>>& conjugate_struct(Conjugation conjugation);
 	const virtual std::string& Infinitive(){return decoratedVerb_->Infinitive();}
 };
@@ -134,8 +112,8 @@ class NegateDecorator : public VerbDecorator
 	std::string negate_;
 public:
 	NegateDecorator (std::shared_ptr<VerbBase> decoratedVerb,std::string negate): VerbDecorator(decoratedVerb),negate_(negate) {}
+	~NegateDecorator(){}
 
-	//std::string conjugate(Conjugation conjugation);
 	std::vector<std::shared_ptr<Component>>& conjugate_struct(Conjugation conjugation);
 	const virtual std::string& Infinitive(){return decoratedVerb_->Infinitive();}
 };
@@ -145,8 +123,8 @@ class PersonDecorator : public VerbDecorator
 	std::string person_;
 public:
 	PersonDecorator (std::shared_ptr<VerbBase> decoratedVerb,std::string person): VerbDecorator(decoratedVerb),person_(person) {}
+	~PersonDecorator(){}
 
-	//std::string conjugate(Conjugation conjugation);
 	std::vector<std::shared_ptr<Component>>& conjugate_struct(Conjugation conjugation);
 	const virtual std::string& Infinitive(){return decoratedVerb_->Infinitive();}
 };
@@ -156,8 +134,8 @@ class SuppressDecorator : public VerbDecorator
 	bool suppress_;
 public:
 	SuppressDecorator (std::shared_ptr<VerbBase> decoratedVerb,bool suppress): VerbDecorator(decoratedVerb),suppress_(suppress) {}
+	~SuppressDecorator(){}
 
-	//std::string conjugate(Conjugation conjugation);
 	std::vector<std::shared_ptr<Component>>& conjugate_struct(Conjugation conjugation);
 	const virtual std::string& Infinitive(){return decoratedVerb_->Infinitive();}
 };

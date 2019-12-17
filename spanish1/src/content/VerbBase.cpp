@@ -41,6 +41,27 @@ std::vector<std::shared_ptr<Component>>& VerbBase :: conjugate_struct(Conjugatio
 	return structure_;
 }
 
+string ConjDecorator::verbsuffix(VerbBase::Conjugation conjugation)
+{
+	vector<string> suffix = {"","o","as","a","amos","áis","an"};
+	string vbtype = VerbBase::verbType(Infinitive());
+	if(vbtype.compare("er")==0){
+		suffix = {"","o","es","e","emos","eis","en"};
+	}
+	else if(vbtype.compare("ir")==0){
+		suffix = {"","o","es","e","imos","is","en"};
+	}
+	return suffix[static_cast<unsigned>(conjugation)];
+}
+
+std::vector<std::shared_ptr<Component>>& ConjDecorator :: conjugate_struct(Conjugation conjugation)
+{
+	auto &v = decoratedVerb_->conjugate_struct(conjugation);
+	v.back()->Value( v.back()->Value()+verbsuffix(conjugation));
+
+	return v;
+}
+/*
 string ARVerbDecorator::verbsuffix(VerbBase::Conjugation conjugation)
 {
 	vector<string> suffix = {"","o","as","a","amos","áis","an"};
@@ -82,7 +103,7 @@ std::vector<std::shared_ptr<Component>>& IRVerbDecorator :: conjugate_struct(Con
 
 	return v;
 }
-
+*/
 string ReflexiveDecorator::Pronoun(Conjugation conjugation)
 {
 	vector<string> pronoun = {"","me","te","se","nos","os","se"};

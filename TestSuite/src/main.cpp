@@ -50,7 +50,7 @@ void testConjWithVec(const std::vector<std::string> &params,const std::string &t
 {
 	std::shared_ptr<ArgsParser> ap = std::make_shared<ArgsParser>(params);
 	std::string ss;
-	Selector sel(params,[&ss](const std::string& output){ss=output;});
+	Selector sel(params,[&ss](const std::string& output)->int{ss=output;return 0;});
 	if(truth){
 		sel.conjugateVerb(ap);
 		REQUIRE(ss.compare(testval)==0);
@@ -61,7 +61,7 @@ void testConjWithStr(const std::string &initializer,const std::string &testval,b
 {
 	std::shared_ptr<ArgsParser> ap = std::make_shared<ArgsParser>(initializer);
 	std::string ss;
-	Selector sel({"-w"},[&ss](const std::string& output){ss=output;});
+	Selector sel({"-w"},[&ss](const std::string& output)->int{ss=output;return 0;});
 	if(truth){
 		sel.conjugateVerb(ap);
 		REQUIRE(ss.compare(testval)==0);
@@ -168,7 +168,7 @@ TEST_CASE( "suppressed negated reflexive stemchange string input","" ) {
 void testReadFromFile(const std::vector<std::string> &filecontents,const std::string &wordType,const std::string &target)
 {
 	std::stringstream ss;
-	Selector sel({"dummyapp","-fwd","dummyfile",wordType},[&ss](const std::string &output){ ss<<"["<<output<<"]";});
+	Selector sel({"dummyapp","-fwd","dummyfile",wordType},[&ss](const std::string &output)->int{ ss<<"["<<output<<"]";return 0;});
 
 	auto parser = [](const std::string& s){return Parser::Process(s);};
 

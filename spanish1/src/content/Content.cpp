@@ -51,12 +51,11 @@ void GeneralContent::insert(const string &entry,function<vector<string>(const st
 
 	shared_ptr<Word> w = make_shared<Word>(output,parse);
 	dictionary_[w->English()]=w;
-
-	//cout << "Word : " << w->English() << " " << w->Foreign() << endl;
 }
 
-void GeneralContent::Display(const std::string &wordtype,function<void(const string & s)> output)
+int GeneralContent::Display(const std::string &wordtype,function<int(const string & s)> output)
 {
+	int rv=0;
 	for(auto it=dictionary_.begin();it!=dictionary_.end();++it){
 		shared_ptr<Word> word=dynamic_pointer_cast<Word>(it->second);
 		if(wordtype.compare("All")==0 || word->Wordtype().compare(wordtype)==0){
@@ -65,29 +64,11 @@ void GeneralContent::Display(const std::string &wordtype,function<void(const str
 
 			stringstream ss;
 			ss << "English: " << it->first << ", Spanish: " << word->Foreign() << type;
-			output(ss.str());
+			rv +=output(ss.str());
 		}
 	}
+	return rv;
 }
-//
-//void Content::ShowKeys(const std::string &wordtype)
-//{
-//	for(auto it=dictionary.begin();it!=dictionary.end();++it){
-//		if(wordtype.compare("All")==0 || it->second->Wordtype().compare(wordtype)==0){
-//
-//			string type = wordtype.compare("All")==0? ", Wordtype: " + it->second->Wordtype() : "";
-//
-//			cout
-//				<< "Key: "
-//				<< it->first
-//				<< ", Spanish: "
-//				<< it->second->Foreign()
-//				<< type
-//				<< endl;
-//		}
-//	}
-//}
-
 //////
 VerbContent::VerbContent() {
 	// TODO Auto-generated constructor stub
@@ -121,12 +102,14 @@ void VerbContent::insert(const string &entry,function<vector<string>(const strin
 	}
 }
 
-void VerbContent::Display(const std::string &wordtype,function<void(const string & s)> output)
+int VerbContent::Display(const std::string &wordtype,function<int(const string & s)> output)
 {
+	int rv=0;
 	for(auto it=dictionary_.begin();it!=dictionary_.end();++it){
 		stringstream ss;
 		shared_ptr<Verb> verb=dynamic_pointer_cast<Verb>(it->second);
 		ss << verb->English() << " : " << verb->Args()[2];
-		output(ss.str());
+		rv +=output(ss.str());
 	}
+	return rv;
 }

@@ -18,18 +18,20 @@
 class WordBase;
 class Word;
 class Verb;
-/*i need an alternative version of this for verbs*/
+
 class Content {
 
-	//std::map<std::string,std::shared_ptr<Word> > dictionary_;
 public:
 	Content();
 	virtual ~Content();
 
-	virtual void insert(const std::string& line,std::function<std::vector<std::string>(const std::string&)> parse)=0;
-	//void ShowKeys(const std::string &wordtype);
+	virtual void insert(
+			const std::string& line,
+			std::function<std::vector<std::string>(const std::string&)> parse)=0;
 	virtual std::map<std::string,std::shared_ptr<WordBase> > Dictionary()=0;
-	virtual void Display(const std::string &wordtype,std::function<void(const std::string & s)> output){};
+	virtual int Display(
+			const std::string &wordtype,
+			std::function<int(const std::string & s)> output){return 0;};
 };
 
 class GeneralContent : public Content{
@@ -39,11 +41,14 @@ public:
 	GeneralContent();
 	virtual ~GeneralContent();
 
-	void insert(const std::string& line,std::function<std::vector<std::string>(const std::string&)> parse);
+	void insert(
+			const std::string& line,
+			std::function<std::vector<std::string>(const std::string&)> parse);
 	std::map<std::string,std::shared_ptr<WordBase> > Dictionary(){return dictionary_;}
 
-	void Display(const std::string &wordtype,std::function<void(const std::string & s)> output);
-	//void ShowKeys(const std::string &wordtype);
+	int Display(
+			const std::string &wordtype,
+			std::function<int(const std::string & s)> output);
 };
 
 
@@ -54,11 +59,14 @@ public:
 	VerbContent();
 	virtual ~VerbContent();
 
-	void insert(const std::string& line,std::function<std::vector<std::string>(const std::string&)> parse);
+	void insert(
+			const std::string& line,
+			std::function<std::vector<std::string>(const std::string&)> parse);
 	std::map<std::string,std::shared_ptr<WordBase> > Dictionary(){return dictionary_;}
 
-	void Display(const std::string &wordtype,std::function<void(const std::string & s)> output);
-	//void ShowKeys(const std::string &wordtype);
+	int Display(
+			const std::string &wordtype,
+			std::function<int(const std::string & s)> output);
 };
 
 #endif /* CONTENT_H_ */

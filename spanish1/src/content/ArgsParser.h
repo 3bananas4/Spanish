@@ -53,10 +53,10 @@ class ArgsParser {
 		if(hideerrors_){
 			return;
 		}
-		if(!Quiet() || !valid_){
+		if(!Quiet() || (!valid_&& error_.size()>0) ){
 
 			std::cout << "Spanish Verb Conjugator" << std::endl;
-			if(!valid_){
+			if(!valid_ ){
 				std::cout << "Invalid input : " << error_ << std::endl;
 			}
 			// review this in the morning
