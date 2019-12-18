@@ -13,6 +13,7 @@
 #include "ArgsParser.h"
 #include "Content.h"
 #include "Parser.h"
+#include "Feeder.h"
 
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch.hpp"
@@ -192,4 +193,26 @@ TEST_CASE("Test reading from file"){
 		testReadFromFile(v,"","[English: bottle, Spanish: la botella, Wordtype: noun][English: hello, Spanish: hola, Wordtype: expr]");
 	}
 
+}
+
+TEST_CASE("Test the lookup app"){
+	Feeder feeder({"dummyapp","dummyfile","make","1"});
+	auto parser = [](const std::string& s)->STRVEC{return LookupParser::Process(s);};
+	feeder.addEntry("{make:\"-is hacer 1 hago\"}",parser);
+	feeder.addEntry("{sing:\"-i cantar 1\"}",parser);
+
+	SECTION("Feed"){
+		REQUIRE(feeder.feedPipe().compare("-is hacer 1 hago")==0);
+	}
+	SECTION("Dictionary Size"){
+		REQUIRE(feeder.Content().size()==2);
+	}
+
+	Feeder feeder2({"dummyapp","dummyfile","sing","2"});
+	feeder2.addEntry("{make:\"-is hacer 1 hago\"}",parser);
+	feeder2.addEntry("{sing:\"-i cantar 1\"}",parser);
+
+	SECTION("Conjugation"){
+		REQUIRE(feeder2.feedPipe().compare("-i cantar 2")==0);
+	}
 }

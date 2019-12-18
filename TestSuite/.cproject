@@ -52,6 +52,8 @@
                                     <listOptionValue builtIn="false" value="/home/james/eclipse-workspace/cpp/spanish1/src/content"/>
                                     									
                                     <listOptionValue builtIn="false" value="/home/james/eclipse-workspace/cpp/shared/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/LookupVerb/src/content}&quot;"/>
                                     								
                                 </option>
                                 								
@@ -117,7 +119,9 @@
                     					
                     <sourceEntries>
                         						
-                        <entry excluding="content|spanish" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        <entry excluding="Feeder|Lookup|content|spanish" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        						
+                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Feeder"/>
                         					
                     </sourceEntries>
                     				

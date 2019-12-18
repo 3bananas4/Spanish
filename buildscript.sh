@@ -13,13 +13,19 @@ ar crf ../../lib/libshared.a Parser.o FileReader.o Component.o
 # build the index using ranlib
 ranlib ../../lib/libshared.a
 
-cd ../../LookupVerb/src
+cd ../../LookupVerb/src/content
 g++ -c Feeder.cpp
-g++ -c LookupVerb.cpp -I./ -I../../shared/src
 
-g++ -o ../../build/LookupVerb Feeder.o LookupVerb.o -I./ -I../../shared/src -L../../lib -lshared 
+ar crf ../../../lib/liblookup.a Feeder.o
+
+ranlib ../../../lib/liblookup.a
+
+cd ../main/
+g++ -c LookupVerb.cpp -I./ -I../../../shared/src -I../content
+
+g++ -o ../../../build/LookupVerb LookupVerb.o -L../../../lib -llookup -lshared
 ##################################################
-cd ../../spanish1/src/content/
+cd ../../../spanish1/src/content/
 g++ -c ArgsParser.cpp
 g++ -c Content.cpp
 g++ -c Rule.cpp
@@ -38,8 +44,8 @@ g++ -o ../../../build/conjugator spanish1.o -I../../../shared/src -I../content -
 
 ##################################################
 cd ../../../TestSuite/src
-g++ -c main.cpp  -I../../shared/src -I../../spanish1/src/content -I./
+g++ -c main.cpp  -I../../shared/src -I../../spanish1/src/content -I../../LookupVerb/src/content -I./
 
-g++ -o ../../build/testsuite main.o -I../../shared/src -I../../spanish1/content -I./ -L../../lib -lshared -lconjugator 
+g++ -o ../../build/testsuite main.o -L../../lib -lshared -lconjugator -llookup
 
 

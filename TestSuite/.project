@@ -26,6 +26,16 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>Feeder</name>
+			<type>2</type>
+			<location>/home/james/eclipse-workspace/cpp/LookupVerb/src/content</location>
+		</link>
+		<link>
+			<name>Lookup</name>
+			<type>2</type>
+			<location>/home/james/eclipse-workspace/cpp/LookupVerb/src</location>
+		</link>
+		<link>
 			<name>content</name>
 			<type>2</type>
 			<location>/home/james/eclipse-workspace/spanish1/src/content</location>
